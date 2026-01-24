@@ -1,93 +1,64 @@
-import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-
-  const menuItems = [
-    { name: "Dashboard", path: "/" },
-    { name: "Products", path: "/products" },
-    { name: "Sales", path: "/sales" },
-    { name: "Reports", path: "/reports" },
-    { name: "Settings", path: "/settings" },
-  ];
-
+export default function Sidebar({ isOpen, setIsOpen }) {
   return (
-    <>
-      {/* Mobile Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        style={styles.toggleBtn}
-      >
-        ☰
-      </button>
+    <div
+      style={{
+        width: isOpen ? "250px" : "0px",
+        overflow: "hidden",
+        transition: "0.3s",
+        height: "100vh",
+        backgroundColor: "#0f172a",
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: isOpen ? "20px 10px" : "0px",
+      }}
+    >
+      <div>
+        <h2 style={{ marginBottom: "30px" }}>SBIMS</h2>
 
-      <div
+        <nav style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <NavLink to="/" style={linkStyle}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/products" style={linkStyle}>
+            Products
+          </NavLink>
+          <NavLink to="/sales" style={linkStyle}>
+            Sales
+          </NavLink>
+          <NavLink to="/reports" style={linkStyle}>
+            Reports
+          </NavLink>
+          <NavLink to="/settings" style={linkStyle}>
+            Settings
+          </NavLink>
+        </nav>
+      </div>
+
+      <button
         style={{
-          ...styles.sidebar,
-          left: isOpen ? "0" : "-250px",
+          padding: "10px",
+          backgroundColor: "#1e293b",
+          border: "none",
+          color: "white",
+          cursor: "pointer",
+          borderRadius: "6px",
         }}
       >
-        <h2 style={styles.logo}>SBIMS</h2>
-
-        {menuItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            style={{
-              ...styles.link,
-              backgroundColor:
-                location.pathname === item.path
-                  ? "#1e293b"
-                  : "transparent",
-            }}
-            onClick={() => setIsOpen(false)}
-          >
-            {item.name}
-          </Link>
-        ))}
-
-        <Link to="/login" style={{ ...styles.link, marginTop: "auto" }}>
-          Logout
-        </Link>
-      </div>
-    </>
+        Logout
+      </button>
+    </div>
   );
 }
 
-const styles = {
-  sidebar: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    height: "100vh",
-    width: "250px",
-    backgroundColor: "#0f172a",
-    color: "white",
-    display: "flex",
-    flexDirection: "column",
-    padding: "20px",
-    transition: "0.3s",
-  },
-  logo: {
-    marginBottom: "30px",
-  },
-  link: {
-    textDecoration: "none",
-    color: "white",
-    padding: "12px",
-    borderRadius: "8px",
-    marginBottom: "10px",
-  },
-  toggleBtn: {
-    position: "fixed",
-    top: "15px",
-    left: "15px",
-    fontSize: "20px",
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    zIndex: 1000,
-  },
-};
+const linkStyle = ({ isActive }) => ({
+  textDecoration: "none",
+  color: "white",
+  padding: "10px",
+  borderRadius: "6px",
+  backgroundColor: isActive ? "#1e293b" : "transparent",
+  transition: "0.3s",
+});
